@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#define DARRAY_INITIAL_CAPACITY 1
+
 /* Construct a darray with a set stride.
 @param type_stride: size of the data type this array is intended to store.
 @returns Newly constructed darray. */

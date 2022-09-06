@@ -5,6 +5,7 @@
 int main() 
 {
   darray array = darray_construct(int);
+  printf("Initial capacity: %i\n", array.capacity);
   int elements[] = {3, 1, 4, 6, 1, 45, 124, 3, 5 };
   darray_add(array, int, 91);
   darray_add_elements(array, elements, 12);

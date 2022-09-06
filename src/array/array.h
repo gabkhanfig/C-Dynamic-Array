@@ -12,8 +12,6 @@ typedef struct darray {
     void* data;
 } darray;
 
-#define DARRAY_INITIAL_CAPACITY 1
-
 extern darray _darray_construct(const size_t type_stride);
 extern void _darray_reallocate(darray* array, const size_t new_capacity);
 extern void _darray_increase_capacity(darray* array);
