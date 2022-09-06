@@ -1,6 +1,8 @@
 #ifndef ARRAY_H
 #define ARRAY_H
 
+#define LOG_ARRAY_ERRORS
+
 #include <stdlib.h>
 
 typedef struct darray {
@@ -20,21 +22,21 @@ extern void* _darray_at(darray* array, size_t index);
 /* Construct a darray with the stride set to the inputted data type. 
 @param type: The intended type of the darray to store (used for stride). 
 @returns Newly constructed darray. */
-#define darray_construct(type) _darray_construct(sizeof(type));
+#define darray_construct(type) _darray_construct(sizeof(type))
 
 /* Get address of an element in the array at a specified index.
 @param array: The array that is being index. Pass in directly (not as pointer).
 @param type: Type of data being read.
 @param index: Index of the element. Byte offset calculated by array's stride.
 @returns Address of the element held in the array. */ 
-#define darray_address_at(array, type, index) (type*)_darray_at(&array, index)
+#define darray_pointer_at(array, type, index) (type*)_darray_at(&array, index)
 
 /* Get the value of an element in the array at a specified index.
 @param array: The array that is being index. Pass in directly (not as pointer).
 @param type: Type of data being read.
 @param index: Index of the element. Byte offset calculated by array's stride.
 @returns Value of the element held in the array. */
-#define darray_at(array, type, index) *darray_address_at(array, type, index);
+#define darray_at(array, type, index) *darray_pointer_at(array, type, index)
 
 /* Add an element to the end of the array, and allocate more data if necessary.
 @param array: The array that is being index. Pass in directly (not as pointer).

@@ -11,7 +11,7 @@ darray _darray_construct(size_t type_stride)
   array.size = 0;
   array.capacity = DARRAY_INITIAL_CAPACITY;
   array.stride = type_stride;
-  array.data = malloc(DARRAY_INITIAL_CAPACITY);
+  array.data = malloc(DARRAY_INITIAL_CAPACITY * type_stride);
   return array;
 }
 
@@ -57,8 +57,10 @@ void _darray_increase_capacity(darray* array)
 void* _darray_at(darray* array, size_t index) 
 {
   if(index >= array->size) {
-    printf("out of bounds");
-    abort();
+    #ifdef LOG_ARRAY_ERRORS
+    printf("[ARRAY ERROR]: Out of bounds in _darray_at(). Attempting to get index %i when size of array is %i\n", index, array->size);
+    #endif
+    //abort();
   }
   return &((char*)array->data)[index * array->stride];
 }
