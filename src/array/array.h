@@ -17,7 +17,7 @@ typedef struct darray {
 extern darray _darray_construct(const size_t type_stride);
 extern void _darray_reallocate(darray* array, const size_t new_capacity);
 extern void _darray_increase_capacity(darray* array);
-extern void* _darray_at(darray* array, size_t index);
+extern void* _darray_at(darray* array, const size_t index);
 extern void _darray_append_elements(darray* array, const void* elements, const size_t amount);
 
 /* Construct a darray with the stride set to the inputted data type. 
