@@ -14,10 +14,11 @@ typedef struct darray {
 
 #define DARRAY_INITIAL_CAPACITY 1
 
-extern darray _darray_construct(size_t type_stride);
-extern void _darray_reallocate(darray* array, size_t new_capacity);
+extern darray _darray_construct(const size_t type_stride);
+extern void _darray_reallocate(darray* array, const size_t new_capacity);
 extern void _darray_increase_capacity(darray* array);
 extern void* _darray_at(darray* array, size_t index);
+extern void _darray_append_elements(darray* array, const void* elements, const size_t amount);
 
 /* Construct a darray with the stride set to the inputted data type. 
 @param type: The intended type of the darray to store (used for stride). 
@@ -36,7 +37,14 @@ extern void* _darray_at(darray* array, size_t index);
 @param type: Type of data being read.
 @param index: Index of the element. Byte offset calculated by array's stride.
 @returns Value of the element held in the array. */
-#define darray_at(array, type, index) *darray_pointer_at(array, type, index)
+#define darray_value_at(array, type, index) *darray_pointer_at(array, type, index)
+
+/* Set the value at a specified index. 
+@param array: The array that is being index. Pass in directly (not as pointer).
+@param type: Type of data being used.
+@param index: Index of the element to set. Byte offset calculated by array's stride. 
+@param element: The value to set. */
+#define darray_set_at(array, type, index, element) darray_value_at(array, type, index) = element
 
 /* Add an element to the end of the array, and allocate more data if necessary.
 @param array: The array that is being index. Pass in directly (not as pointer).
@@ -47,5 +55,13 @@ if(array.size == array.capacity)            \
   _darray_increase_capacity(&array);        \
 ((type*)array.data)[array.size] = element;  \
 array.size++
+
+/* Add multiple elements to the end of the array at once, allocating as much space as necessary.
+Assumes each element of the elements passed in have the same size as the array's stride.
+@param array: The array that is being index. Pass in directly (not as pointer).
+@param elements: Beginning of elements. 
+@param amount: Amount of elements of the type to add. */
+#define darray_add_elements(array, elements, amount) _darray_append_elements(&array, elements, amount)
+
 
 #endif

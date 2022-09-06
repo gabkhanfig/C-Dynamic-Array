@@ -5,7 +5,7 @@
 /* Construct a darray with a set stride.
 @param type_stride: size of the data type this array is intended to store.
 @returns Newly constructed darray. */
-darray _darray_construct(size_t type_stride) 
+darray _darray_construct(const size_t type_stride) 
 {
   darray array;
   array.size = 0;
@@ -18,7 +18,7 @@ darray _darray_construct(size_t type_stride)
 /* Reallocated a darray to have a new capacity, copying over and freeing the old elements.
 @param array: Pointer to the array.
 @param new_capacity: The new capacity of the array. */
-void _darray_reallocate(darray* array, size_t new_capacity) 
+void _darray_reallocate(darray* array, const size_t new_capacity) 
 {
   const size_t stride = array->stride;
   const size_t mem_bytes = new_capacity * stride;
@@ -54,7 +54,7 @@ void _darray_increase_capacity(darray* array)
 @param array: Pointer to the array.
 @param index: Element to get.
 @returns Pointer to the element. */
-void* _darray_at(darray* array, size_t index) 
+void* _darray_at(darray* array, const size_t index) 
 {
   if(index >= array->size) {
     #ifdef LOG_ARRAY_ERRORS
@@ -64,3 +64,19 @@ void* _darray_at(darray* array, size_t index)
   }
   return &((char*)array->data)[index * array->stride];
 }
+
+/* Copy any set of elements of a varying size onto the end of the array.
+Assumes all elements are of the same sizeof as the array's stride.
+@param array: Pointer to the array.
+@param elements: Beginning of elements. 
+@param amount: Amount of elements of the type to add. */
+void _darray_append_elements(darray* array, const void* elements, const size_t amount) 
+{
+  const size_t new_size = array->size + amount;
+  if(new_size >= array->capacity)
+    _darray_reallocate(array, new_size);  
+  memcpy(array->data + (array->size * array->stride), elements, array->stride * amount);
+  array->size = new_size;
+}
+
+

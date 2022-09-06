@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "array_alt.h": "c"
+        "array_alt.h": "c",
+        "array.h": "c",
+        "stdio.h": "c"
     }
 }
