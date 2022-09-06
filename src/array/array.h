@@ -2,7 +2,6 @@
 #define ARRAY_H
 
 #include <stdlib.h>
-#include <string.h>
 
 typedef struct darray {
     size_t size;
@@ -13,54 +12,15 @@ typedef struct darray {
 
 #define DARRAY_INITIAL_CAPACITY 1
 
-darray _darray_construct(size_t type_stride) 
-{
-  darray array;
-  array.size = 0;
-  array.capacity = DARRAY_INITIAL_CAPACITY;
-  array.stride = type_stride;
-  array.data = malloc(DARRAY_INITIAL_CAPACITY);
-  return array;
-}
+extern darray _darray_construct(size_t type_stride);
+extern void _darray_reallocate(darray* array, size_t new_capacity);
+extern void _darray_increase_capacity(darray* array);
+extern void* _darray_at(darray* array, size_t index);
 
-void _darray_reallocate(darray* array, size_t new_capacity) 
-{
-  const size_t stride = array->stride;
-  const size_t mem_bytes = new_capacity * stride;
-  void* new_data = malloc(mem_bytes);
-
-  if(new_capacity < array->size)
-    array->size = new_capacity;
-
-  memcpy(new_data, array->data, array->size * array->stride);
-
-  array->capacity = new_capacity;
-
-  free(array->data);
-
-  array->data = new_data;
-}
-
-void _darray_increase_capacity(darray* array) 
-{
-  const size_t current_capacity = array->capacity;
-  size_t new_capacity;
-  if(current_capacity < 5) {
-    new_capacity = (current_capacity + 1) * 2; // big initial increase
-  } else {
-    new_capacity = (current_capacity * 3) >> 1; // x 1.5
-  }
-  _darray_reallocate(array, new_capacity);
-}
-
-void* _darray_at(darray* array, size_t index) 
-{
-  if(index >= array->size) {
-    printf("out of bounds");
-    abort();
-  }
-  return &((char*)array->data)[index * array->stride];
-}
+/* Construct a darray with the stride set to the inputted data type. 
+@param type: The intended type of the darray to store (used for stride). 
+@returns Newly constructed darray. */
+#define darray_construct(type) _darray_construct(sizeof(type));
 
 /* Get address of an element in the array at a specified index.
 @param array: The array that is being index. Pass in directly (not as pointer).
@@ -85,11 +45,5 @@ if(array.size == array.capacity)            \
   _darray_increase_capacity(&array);        \
 ((type*)array.data)[array.size] = element;  \
 array.size++
-
-
-
-
-
-
 
 #endif
