@@ -2,6 +2,7 @@
  Dynamic Array in C
 
 <h3>Current functionality:</h1>
+
 - Construction from a given type
 - Reallocation of varying capacity
 - Adding an element with capacity increasing if necessary
